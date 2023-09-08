@@ -109,7 +109,6 @@ namespace LinqToDB.DataProvider.SqlServer
 					c.CONSTRAINT_TYPE='PRIMARY KEY'")
 				.ToList();
 		}
-
 		protected override List<ColumnInfo> GetColumns(DataConnection dataConnection, GetSchemaOptions options)
 		{
 			return dataConnection.Query<ColumnInfo>(
@@ -127,9 +126,13 @@ namespace LinqToDB.DataProvider.SqlServer
 					COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsIdentity') as IsIdentity,
 					CASE WHEN c.DATA_TYPE = 'timestamp'
 						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsComputed') = 1
+						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'GeneratedAlwaysType') != 0
+						OR COLUMN_NAME = 'CreatedDate'
 						THEN 1 ELSE 0 END as SkipOnInsert,
 					CASE WHEN c.DATA_TYPE = 'timestamp'
 						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsComputed') = 1
+						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'GeneratedAlwaysType') != 0
+						OR COLUMN_NAME = 'CreatedDate'
 						THEN 1 ELSE 0 END as SkipOnUpdate
 				FROM
 					INFORMATION_SCHEMA.COLUMNS c"
@@ -147,9 +150,13 @@ namespace LinqToDB.DataProvider.SqlServer
 					COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsIdentity') as IsIdentity,
 					CASE WHEN c.DATA_TYPE = 'timestamp'
 						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsComputed') = 1
+						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'GeneratedAlwaysType') != 0
+						OR COLUMN_NAME = 'CreatedDate'
 						THEN 1 ELSE 0 END as SkipOnInsert,
 					CASE WHEN c.DATA_TYPE = 'timestamp'
 						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsComputed') = 1
+						OR COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'GeneratedAlwaysType') != 0
+						OR COLUMN_NAME = 'CreatedDate'
 						THEN 1 ELSE 0 END as SkipOnUpdate
 				FROM
 					INFORMATION_SCHEMA.COLUMNS c
